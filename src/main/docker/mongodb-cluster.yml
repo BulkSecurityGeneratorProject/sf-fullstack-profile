@@ -1,0 +1,16 @@
+version: '2'
+services:
+    apispotify-mongodb:
+        image: mongo:3.4.10
+        ports:
+            - "27017:27017"
+        command: mongos --configdb apispotify-mongodb-config
+    apispotify-mongodb-node:
+        build:
+            context: .
+            dockerfile: mongodb/MongoDB.Dockerfile
+        command: mongod --replSet rs1 --noprealloc --smallfiles
+    apispotify-mongodb-config:
+        image: mongo:3.4.10
+        container_name: apispotify-mongodb-config
+        command: mongod --noprealloc --smallfiles --configsvr --dbpath /data/db
