@@ -1,6 +1,7 @@
 package cl.fallabela.spotify.service;
 
 import cl.fallabela.spotify.ApispotifyApp;
+import cl.fallabela.spotify.domain.ResponseAlbum;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,10 +34,10 @@ public class SpotifyTest {
 
         String token = spotify.getToken();
 
-        System.out.println("token: " +token);
+        System.out.println("token: " + token);
 
-        String albums = spotify.getAlbums("clasica", token);
-        System.out.println("albums : " +albums);
+        ResponseAlbum albums = spotify.getAlbums("clasica", token);
+        System.out.println(albums);
         Assert.assertThat(albums, is(notNullValue()));
 
 //        assertThat(token).isEqualTo("Hello John Doe!");

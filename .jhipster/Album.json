@@ -1,0 +1,28 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "albumType",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "releaseDate",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "artistList",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20180615204427",
+    "entityTableName": "album",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false
+}

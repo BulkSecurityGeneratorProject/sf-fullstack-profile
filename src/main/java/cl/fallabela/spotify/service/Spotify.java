@@ -1,11 +1,11 @@
 package cl.fallabela.spotify.service;
 
-import cl.fallabela.spotify.domain.ReponseTokenSpotify;
+import cl.fallabela.spotify.domain.*;
+import cl.fallabela.spotify.repository.AlbumRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
@@ -14,18 +14,21 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
+import org.springframework.stereotype.Service;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.apache.http.HttpHeaders.USER_AGENT;
 
-@Component
+@Service
 public class Spotify {
+
+    private final Logger log = LoggerFactory.getLogger(Spotify.class);
 
     @Value("${application.spotify.clientid}")
     private String clientId;
@@ -39,14 +42,11 @@ public class Spotify {
     @Value("${application.spotify.urlsearch}")
     private String urlSearch;
 
-    public Spotify(String clientId, String clientSecret, String url, String urlSearch) {
-        this.clientId = clientId;
-        this.clientSecret = clientSecret;
-        this.url = url;
-        this.urlSearch = urlSearch;
-    }
+    ObjectMapper objectMapper = new ObjectMapper();
+    private final AlbumRepository albumRepository;
 
-    public Spotify() {
+    public Spotify(AlbumRepository albumRepository) {
+        this.albumRepository = albumRepository;
     }
 
     public String getToken() throws Exception {
@@ -68,39 +68,24 @@ public class Spotify {
             post.setEntity(new UrlEncodedFormEntity(urlParameters));
 
             HttpResponse response = null;
-
             response = client.execute(post);
-
-            System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-
-            ObjectMapper objectMapper = new ObjectMapper();
-
             String jsonResponse = EntityUtils.toString(response.getEntity());
-
             ReponseTokenSpotify reponseTokenSpotify = objectMapper.readValue(jsonResponse, ReponseTokenSpotify.class);
 
             return reponseTokenSpotify.getAccessToken();
 
-        } catch (UnsupportedEncodingException e) {
-            throw new Exception("FALLO LA OPTENCION DE TOKEN: " + e.getMessage());
-        } catch (ClientProtocolException e) {
-            throw new Exception("FALLO LA OPTENCION DE TOKEN: " + e.getMessage());
         } catch (IOException e) {
             throw new Exception("FALLO LA OPTENCION DE TOKEN: " + e.getMessage());
         }
     }
 
-    public String getAlbums(String muse, String token) throws Exception {
-
+    public ResponseAlbum getAlbums(String muse, String token) throws Exception {
         try {
             HttpClient client = HttpClientBuilder.create().build();
 
             URIBuilder uriBuilder = new URIBuilder(urlSearch);
             uriBuilder.addParameter("q", muse);
             uriBuilder.addParameter("type", "album");
-            uriBuilder.addParameter("limit", "19");
-
-            System.out.println("URL: " + uriBuilder.build());
 
             HttpGet get = new HttpGet(uriBuilder.build());
 
@@ -109,14 +94,50 @@ public class Spotify {
             get.setHeader("Authorization", "Bearer " + token);
 
             HttpResponse response = null;
-
             response = client.execute(get);
+            String jsonResponse = EntityUtils.toString(response.getEntity());
+            ResponseAlbum responseAlbum = objectMapper.readValue(jsonResponse, ResponseAlbum.class);
 
-            return EntityUtils.toString(response.getEntity());
-        } catch (ClientProtocolException e) {
-            throw new Exception("FALLO LA BUSQUEDA DE ALBUMS: " + e.getMessage());
+            return responseAlbum;
         } catch (IOException e) {
             throw new Exception("FALLO LA BUSQUEDA DE ALBUMS: " + e.getMessage());
         }
+    }
+
+    public Optional<ResponseAlbum> readAlbums(String muse) {
+
+        Optional<ResponseAlbum> responseAlbum = null;
+        String token = null;
+        try {
+            token = getToken();
+            responseAlbum = Optional.ofNullable(getAlbums(muse, token));
+
+            //save in mongoDB
+            if (responseAlbum.isPresent()) {
+                for (Item item : responseAlbum.get().getAlbums().getItems()) {
+                    Album album = new Album();
+                    album.setAlbumType(item.getAlbumType());
+                    album.setId(item.getId());
+                    album.setName(item.getName());
+                    album.setReleaseDate(item.getReleaseDate());
+
+                    album.setArtistList(readArtist(item.getArtists()));
+
+                    Album result = albumRepository.save(album);
+                }
+            }
+            return responseAlbum;
+        } catch (Exception e) {
+            log.debug(e.getMessage());
+            return responseAlbum;
+        }
+    }
+
+    private String readArtist(List<ArtistSpotify> artists) {
+        StringBuilder artistSpotify = new StringBuilder();
+        for (ArtistSpotify artist : artists) {
+            artistSpotify.append(artist.getId() + ";");
+        }
+        return artistSpotify.toString();
     }
 }

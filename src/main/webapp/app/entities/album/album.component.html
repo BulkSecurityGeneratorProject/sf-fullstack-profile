@@ -1,0 +1,64 @@
+<div>
+    <h2>
+        <span>Albums</span>
+        <button class="btn btn-primary float-right jh-create-entity create-album" [routerLink]="['/', { outlets: { popup: ['album-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span >
+            Create new Album
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="albums">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span>ID</span></th>
+            <th><span>Album Type</span></th>
+            <th><span>Name</span></th>
+            <th><span>Release Date</span></th>
+            <th><span>Artist List</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let album of albums ;trackBy: trackId">
+                <td><a [routerLink]="['../album', album.id ]">{{album.id}}</a></td>
+                <td>{{album.albumType}}</td>
+                <td>{{album.name}}</td>
+                <td>{{album.releaseDate}}</td>
+                <td>{{album.artistList}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../album', album.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'album/'+ album.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'album/'+ album.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

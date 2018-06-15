@@ -1,0 +1,12 @@
+entity Artist{
+	name String
+    id String
+}
+
+entity Album{
+	albumType String
+    name String
+    releaseDate String
+    artistList String
+}
+
