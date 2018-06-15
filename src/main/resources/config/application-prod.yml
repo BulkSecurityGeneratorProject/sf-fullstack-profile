@@ -27,8 +27,10 @@ spring:
             enabled: false
     data:
         mongodb:
-            uri: mongodb://localhost:27017
-            database: apispotify
+            uri: mongodb://sadmin:pass1234@35.231.141.20:27017
+            database: spotify
+#            username: falabella
+#            password: pass123
     mail:
         host: localhost
         port: 25
@@ -119,3 +121,7 @@ jhipster:
 # ===================================================================
 
 application:
+    spotify:
+            clientid: 5de5cc1dea9a49248447e9c1fc8c883e
+            clientSecret: f96497e6b670460a8b68279f9d9a1375
+            url: https://accounts.spotify.com/api/token

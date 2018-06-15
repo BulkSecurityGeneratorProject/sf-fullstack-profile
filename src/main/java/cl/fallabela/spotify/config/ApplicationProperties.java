@@ -11,4 +11,40 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class ApplicationProperties {
 
+//    private final Spotify spotify = new Spotify();
+//
+//    public Spotify getSpotify() {
+//        return spotify;
+//    }
+//
+//    public static class Spotify {
+//        private String clientId;
+//        private String clientSecret;
+//        private String url;
+//
+//        public String getClientId() {
+//            return clientId;
+//        }
+//
+//        public void setClientId(String clientId) {
+//            this.clientId = clientId;
+//        }
+//
+//        public String getClientSecret() {
+//            return clientSecret;
+//        }
+//
+//        public void setClientSecret(String clientSecret) {
+//            this.clientSecret = clientSecret;
+//        }
+//
+//        public String getUrl() {
+//            return url;
+//        }
+//
+//        public void setUrl(String url) {
+//            this.url = url;
+//        }
+//    }
+
 }
