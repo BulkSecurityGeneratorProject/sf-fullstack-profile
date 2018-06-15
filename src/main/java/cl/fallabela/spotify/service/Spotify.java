@@ -14,11 +14,10 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,17 +27,17 @@ import static org.apache.http.HttpHeaders.USER_AGENT;
 @Component
 public class Spotify {
 
-    //    @Value("${application.clientid}")
+    @Value("${application.spotify.clientid}")
     private String clientId;
 
-    //    @Value("${application.clientSecret}")
+    @Value("${application.spotify.clientsecret}")
     private String clientSecret;
 
-    //    @Value("${application.url}")
+    @Value("${application.spotify.url}")
     private String url;
-    //    @Value("${application.urlsearch}")
-    private String urlSearch;
 
+    @Value("${application.spotify.urlsearch}")
+    private String urlSearch;
 
     public Spotify(String clientId, String clientSecret, String url, String urlSearch) {
         this.clientId = clientId;

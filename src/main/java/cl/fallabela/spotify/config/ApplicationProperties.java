@@ -11,40 +11,49 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class ApplicationProperties {
 
-//    private final Spotify spotify = new Spotify();
-//
-//    public Spotify getSpotify() {
-//        return spotify;
-//    }
-//
-//    public static class Spotify {
-//        private String clientId;
-//        private String clientSecret;
-//        private String url;
-//
-//        public String getClientId() {
-//            return clientId;
-//        }
-//
-//        public void setClientId(String clientId) {
-//            this.clientId = clientId;
-//        }
-//
-//        public String getClientSecret() {
-//            return clientSecret;
-//        }
-//
-//        public void setClientSecret(String clientSecret) {
-//            this.clientSecret = clientSecret;
-//        }
-//
-//        public String getUrl() {
-//            return url;
-//        }
-//
-//        public void setUrl(String url) {
-//            this.url = url;
-//        }
-//    }
+    private Spotify spotify = new Spotify();
+
+    public Spotify getSpotify() {
+        return spotify;
+    }
+
+    public static class Spotify {
+        private String clientid;
+        private String clientsecret;
+        private String url;
+        private String urlsearch;
+
+        public String getClientid() {
+            return clientid;
+        }
+
+        public void setClientid(String clientid) {
+            this.clientid = clientid;
+        }
+
+        public String getClientsecret() {
+            return clientsecret;
+        }
+
+        public void setClientsecret(String clientsecret) {
+            this.clientsecret = clientsecret;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
+
+        public String getUrlsearch() {
+            return urlsearch;
+        }
+
+        public void setUrlsearch(String urlsearch) {
+            this.urlsearch = urlsearch;
+        }
+    }
 
 }

@@ -21,24 +21,11 @@ import static org.junit.Assert.*;
 @SpringBootTest(classes = ApispotifyApp.class)
 public class SpotifyTest {
 
-//    @Value("${application.spotify.clientid}")
-    private String clientId = "5de5cc1dea9a49248447e9c1fc8c883e";
-
-//    @Value("${application.spotify.clientSecret}")
-    private String clientSecret = "f96497e6b670460a8b68279f9d9a1375";
-
-//    @Value("${application.spotify.url}")
-    private String url = "https://accounts.spotify.com/api/token";
-
-    //    @Value("${application.urlsearch}")
-    private String urlSearch = "https://api.spotify.com/v1/search";
-
-//    @Autowired
+    @Autowired
     private Spotify spotify;
 
     @Before
     public void setUp() throws Exception {
-        spotify = new Spotify(clientId, clientSecret, url, urlSearch);
     }
 
     @Test
@@ -48,10 +35,9 @@ public class SpotifyTest {
 
         System.out.println("token: " +token);
 
-        String albums = spotify.getAlbums("school", token);
+        String albums = spotify.getAlbums("clasica", token);
         System.out.println("albums : " +albums);
         Assert.assertThat(albums, is(notNullValue()));
-
 
 //        assertThat(token).isEqualTo("Hello John Doe!");
 
