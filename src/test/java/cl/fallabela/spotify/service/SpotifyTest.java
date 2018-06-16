@@ -7,15 +7,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
@@ -33,15 +30,20 @@ public class SpotifyTest {
     public void getToken() throws Exception {
 
         String token = spotify.getToken();
-
         System.out.println("token: " + token);
-
-        ResponseAlbum albums = spotify.getAlbums("clasica", token);
-        System.out.println(albums);
-        Assert.assertThat(albums, is(notNullValue()));
+        Assert.assertThat(token, is(notNullValue()));
 
 //        assertThat(token).isEqualTo("Hello John Doe!");
 
+    }
+
+    @Test
+    public void getAlbums() throws Exception {
+        String token = spotify.getToken();
+        System.out.println("token: " + token);
+        ResponseAlbum albums = spotify.getAlbums("clasica", token);
+        Assert.assertThat(albums, is(notNullValue()));
 
     }
+
 }

@@ -26,6 +26,7 @@ import {
     PageRibbonComponent,
     ErrorComponent
 } from './layouts';
+import {SearchalbumsModule} from './spotify/searchalbums/searchalbums.module';
 
 @NgModule({
     imports: [
@@ -37,6 +38,7 @@ import {
         ApispotifyAdminModule,
         ApispotifyAccountModule,
         ApispotifyEntityModule,
+        SearchalbumsModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [

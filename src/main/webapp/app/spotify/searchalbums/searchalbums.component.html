@@ -1,0 +1,35 @@
+<div class="">
+    <div class="form-group">
+        <input name="muse" class="form-control form-text" placeholder="Muse..." type="text" [(ngModel)]="muse"
+               (keyup.enter)="loadAll()"/>
+    </div>
+    <div>
+        <span class="input-group-btn"> <button type="submit" class="btn btn-primary col-lg-1"
+                                               (click)="loadAll()"><i
+            class="fa fa-search fa-lg">&nbsp;</i></button></span>
+    </div>
+</div>
+
+<div class="table-responsive" *ngIf="albums">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th><span>ID</span></th>
+            <th><span>Album Type</span></th>
+            <th><span>Name</span></th>
+            <th><span>Release Date</span></th>
+            <th><span>Uri</span></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let album of albums ;trackBy: trackId">
+            <td><a [routerLink]="['../album', album.id ]">{{album.id}}</a></td>
+            <td>{{album.album_type}}</td>
+            <td>{{album.name}}</td>
+            <td>{{album.release_date}}</td>
+            <td>{{album.uri}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>

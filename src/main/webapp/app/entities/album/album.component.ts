@@ -1,18 +1,18 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { Subscription } from 'rxjs/Subscription';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
+import {Subscription} from 'rxjs/Subscription';
+import {JhiEventManager, JhiAlertService} from 'ng-jhipster';
 
-import { Album } from './album.model';
-import { AlbumService } from './album.service';
-import { Principal } from '../../shared';
+import {Album} from './album.model';
+import {AlbumService} from './album.service';
+import {Principal} from '../../shared';
 
 @Component({
     selector: 'jhi-album',
     templateUrl: './album.component.html'
 })
 export class AlbumComponent implements OnInit, OnDestroy {
-albums: Album[];
+    albums: Album[];
     currentAccount: any;
     eventSubscriber: Subscription;
 
@@ -32,6 +32,7 @@ albums: Album[];
             (res: HttpErrorResponse) => this.onError(res.message)
         );
     }
+
     ngOnInit() {
         this.loadAll();
         this.principal.identity().then((account) => {
@@ -47,6 +48,7 @@ albums: Album[];
     trackId(index: number, item: Album) {
         return item.id;
     }
+
     registerChangeInAlbums() {
         this.eventSubscriber = this.eventManager.subscribe('albumListModification', (response) => this.loadAll());
     }

@@ -1,6 +1,7 @@
 package cl.fallabela.spotify.web.rest;
 
 import cl.fallabela.spotify.domain.Albums;
+import cl.fallabela.spotify.domain.Item;
 import cl.fallabela.spotify.domain.ResponseAlbum;
 import cl.fallabela.spotify.service.Spotify;
 import cl.fallabela.spotify.web.rest.errors.InternalServerErrorException;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -34,13 +36,13 @@ public class SpotifyResource {
      * @return the ResponseEntity with status 200 (OK) and with body all albums
      */
     @GetMapping("/spotify/albums/{muse}")
-    public ResponseEntity<Albums> getUser(@PathVariable String muse) {
+    public ResponseEntity<List<Item>> getAlbums(@PathVariable String muse) {
         log.debug("REST request to get albums : {}", muse);
         Optional<ResponseAlbum> resp = spotify.readAlbums(muse);
 
         if (!resp.isPresent()) {
             throw new InternalServerErrorException("Error when trying to take the albums");
         }
-        return new ResponseEntity<>(resp.get().getAlbums(), HttpStatus.OK);
+        return new ResponseEntity<>(resp.get().getAlbums().getItems(), HttpStatus.OK);
     }
 }
